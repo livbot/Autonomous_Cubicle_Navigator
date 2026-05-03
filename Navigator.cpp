@@ -52,7 +52,7 @@ int CubicleNavigator::calculateH(Point p1, Point p2) const{
 }
 
 void CubicleNavigator::findPath(std::string startName, std::string endName) {
-    std::vector<std::vector<bool> visited(height,std::vector<bool>(width, false));
+    std::vector<std::vector<bool>> visited(height,std::vector<bool>(width, false));
     #ifdef DEBUG
         std::cout << "[TRACE] Starting search from " <<startName << "..." << std::endl;
     #endif
@@ -72,19 +72,28 @@ void CubicleNavigator::findPath(std::string startName, std::string endName) {
         steps++;
         visited[current.y][current.x] = true;
         #ifdef DEBUG
-            std::cout << "Navigating from " << startName << " to(" << current.x <<"," << current.y << ")"<< std::endl;
+            std::cout << "Navigating " << startName << " to(" << current.x <<"," << current.y << ")"<< std::endl;
         #endif
             // Logic: In a full A* implementation, you'd use a priority_queue here.
-        if(current.x < goal.x && grid[current.y][current.x + 1] == 0 && !visited[current.y][current.x + 1]){
+        //if(current.x < goal.x && grid[current.y][current.x + 1] == 0 && !visited[current.y][current.x + 1]){
+        if(current.x < goal.x && isValidMove(current.x + 1, current.y, visited)){
             current.x++; //Move East
-        }else if (current.y <goal.y && grid[current.y + 1][current.x] == 0){
+        }else if (current.y <goal.y && isValidMove(current.x, current.y + 1, visited)){
             current.y++; //Move South
-        }else if (current.x > goal.x && grid[current.y][current.x -1] ==0){
+        }else if (current.x > goal.x && isValidMove(current.x - 1, current.y, visited)){
             current.x--; //Move West 
-        }else if (current.y >goal.y && grid[current.y - 1][current.x] == 0){
+        }else if (current.y >goal.y && isValidMove(current.x, current.y - 1, visited)){
             current.y--; //Move North
         }else{
-            std::cout << "!!Path Blocked at (" << current.x << ',' << current.y << ')' << std::endl;
+            // If Heuristic path is blocked, try ANY valid neighbour (simple backtracking)
+            if (isValidMove(current.x + 1, current.y, visited)) current.x++;
+            else if (isValidMove(current.x -1, current.y, visited)) current.x--;
+            else if (isValidMove(current.x, current.y + 1, visited)) current.y++;
+            else if (isValidMove(current.x, current.y - 1, visited)) current.y--;
+            else{
+                std::cout << "!!Path Blocked at (" << current.x << ',' << current.y << ')' << std::endl;
+            }
+            
         }
         if (steps > 1000){
             std::cout << "Search timed out." << std::endl;
@@ -93,8 +102,10 @@ void CubicleNavigator::findPath(std::string startName, std::string endName) {
 
     }
     // For now, we print the target coordinates to verify the directory works.
-    std::cout << "Target Coordinates: (" << goal.x << ", " << goal.y << ")" << std::endl;
-       
+    if (current.x == goal.x && current.y == goal.y){
+        std::cout << "Success! Path found in steps" << steps << "at (" << goal.x << ", " << goal.y << ")" << std::endl;
+    }
+      
 }
 
 bool CubicleNavigator::isValidMove(int x, int y, const std::vector<std::vector<bool>>& visited) {

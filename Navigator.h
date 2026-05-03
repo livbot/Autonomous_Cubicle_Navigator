@@ -26,10 +26,13 @@ public:
     void findPath(std::string startName, std::string endName);
 
 private:
+    std::vector<std::vector<int>> grid;
     std::unordered_map<std::string, Point> directory;
     std::vector<std::vector<int>> isSafe;
     int calculateH(Point p1, Point p2) const;
     int width, height;
+    bool isValidMove(int x, int y, const std::vector<std::vector<bool>> &visited);
+    
 };
 
 #endif
