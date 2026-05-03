@@ -96,3 +96,14 @@ void CubicleNavigator::findPath(std::string startName, std::string endName) {
     std::cout << "Target Coordinates: (" << goal.x << ", " << goal.y << ")" << std::endl;
        
 }
+
+bool CubicleNavigator::isValidMove(int x, int y, const std::vector<std::vector<bool>>& visited) {
+    // Gate 1: Are we still inside the office? (Boundary Check)
+    if (x < 0 || x >= width || y < 0 || y >= height) return false;
+
+    // Gate 2: Is it a hallway (0) or a wall (1)? (Safety Check)
+    if (grid[y][x] != 0) return false;
+
+    // Gate 3: Have we been here before? (Memory Check)
+    return !visited[y][x];
+}
