@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 struct Point {
-    int x, y;
+    int x, y; //(column, row)
     // Overload == to compare points easily
     bool operator==(const Point& other) const { return x == other.x && y == other.y; }
 };
@@ -25,14 +25,17 @@ public:
     void loadEmployees(const std::string& filename);
     void findPath(std::string startName, std::string endName);
 
+
 private:
-    std::vector<std::vector<int>> grid;
+    std::vector<std::vector<int>> grid;  //Memory: [y][x]
     std::unordered_map<std::string, Point> directory;
     std::vector<std::vector<int>> isSafe;
     int calculateH(Point p1, Point p2) const;
     int width, height;
     bool isValidMove(int x, int y, const std::vector<std::vector<bool>> &visited);
+
     
+       
 };
 
 #endif

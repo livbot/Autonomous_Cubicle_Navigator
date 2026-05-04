@@ -9,16 +9,17 @@
 CubicleNavigator::CubicleNavigator() {
     // 0 = Walkable, 1 = Cubicle Wall
     grid = {
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=0
-        {0, 0, 1, 1, 0, 1, 1, 0, 0, 0}, //Y=1
-        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, //Y=2
-        {0, 1, 1, 0, 1, 1, 0, 1, 1, 0}, //Y=3
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=4
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=5
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=6
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=7
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=8
-       //0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=0  R
+        {0, 0, 1, 1, 0, 1, 1, 0, 0, 0}, //Y=1  O 
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, //Y=2  W
+        {0, 1, 1, 0, 1, 1, 0, 1, 1, 0}, //Y=3  
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=4  
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=5  
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=6  
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=7  
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=8  
+       //0, 1, 2, 3, 4, 5, 6, 7, 8, 9          
+       //C O L U M N
     };
     height = grid.size();
     width = grid[1].size();
@@ -72,7 +73,7 @@ void CubicleNavigator::findPath(std::string startName, std::string endName) {
         steps++;
         visited[current.y][current.x] = true;
         #ifdef DEBUG
-            std::cout << "Navigating " << startName << " to(" << current.x <<"," << current.y << ")"<< std::endl;
+            std::cout << "Navigating " << startName << " to (column, row) (" << current.x <<"," << current.y << ")"<< std::endl;
         #endif
             // Logic: In a full A* implementation, you'd use a priority_queue here.
         //if(current.x < goal.x && grid[current.y][current.x + 1] == 0 && !visited[current.y][current.x + 1]){
@@ -103,7 +104,7 @@ void CubicleNavigator::findPath(std::string startName, std::string endName) {
     }
     // For now, we print the target coordinates to verify the directory works.
     if (current.x == goal.x && current.y == goal.y){
-        std::cout << "Success! Path found in steps" << steps << "at (" << goal.x << ", " << goal.y << ")" << std::endl;
+        std::cout << "Success! Path found in steps " << steps << "at (" << goal.x << ", " << goal.y << ")" << std::endl;
     }
       
 }
