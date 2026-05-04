@@ -13,8 +13,8 @@ CubicleNavigator::CubicleNavigator() {
         {0, 0, 1, 1, 0, 1, 1, 0, 0, 0}, //Y=1  O 
         {0, 0, 0, 0, 0, 0, 0, 0, 1, 0}, //Y=2  W
         {0, 1, 1, 0, 1, 1, 0, 1, 1, 0}, //Y=3  
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=4  
-        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=5  
+        {0, 0, 0, 0, 0, 1, 0, 0, 0, 0}, //Y=4  
+        {0, 0, 0, 0, 1, 0, 1, 0, 0, 0}, //Y=5  
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=6  
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=7  
         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //Y=8  
@@ -118,4 +118,32 @@ bool CubicleNavigator::isValidMove(int x, int y, const std::vector<std::vector<b
 
     // Gate 3: Have we been here before? (Memory Check)
     return !visited[y][x];
+}
+
+bool CubicleNavigator::findPathRecursive(Point current, Point goal, std::vector<std::vector<bool>>& visited) {
+    
+    visited[current.y][current.x] = true;
+
+    if (current == goal) {
+        std::cout << "Success! Reached goal at (" << current.x << "," << current.y << ")" << std::endl;
+        return true;
+    }
+
+    
+    for (const auto& d : movePriority) {
+        Point next = {current.x + d.x, current.y + d.y};
+
+        if (isValidMove(next.x, next.y, visited)) {
+            std::cout << "Navigating Andy to (column, row)(" << next.x << "," << next.y << ")" << std::endl;
+
+            if (findPathRecursive(next, goal, visited)) {
+                return true;
+            }
+        }
+    }
+
+    // 3. Backtracking Log
+    // Triggers when Andy hits a dead end and returns to the previous caller
+    std::cout << "[BACKTRACK] Dead end at (column, row)(" << current.x << "," << current.y << "). Retreating..." << std::endl;
+    return false;
 }

@@ -33,8 +33,9 @@ private:
     int calculateH(Point p1, Point p2) const;
     int width, height;
     bool isValidMove(int x, int y, const std::vector<std::vector<bool>> &visited);
-
-    
+    bool findPathRecursive(Point current, Point goal, std::vector<std::vector<bool>>& visited);
+    std::vector<Point> movePriority; // EAST > SOUTH > WEST > NORTH
+   
        
 };
 
